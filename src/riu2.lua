@@ -1,6 +1,8 @@
--- VARIABLES
+-- MAIN VARIABLES
 local mobs = {}
 getgenv().mob = nil 
+
+-- AUTO SKILL VARIABLES
 getgenv().lmb = nil
 getgenv().e = nil
 getgenv().r = nil
@@ -10,6 +12,14 @@ getgenv().b = nil
 getgenv().y = nil
 getgenv().z = nil
 
+-- LOCAL PLAYER VARIABLES
+_G.sj = nil
+getgenv().WalkSpeedValue = 17
+getgenv().JumpPowerValue = 51
+
+-- ITEM FARM
+local items = {}
+getgenv().item = nil
 
 -- MOBS
 for _,v in pairs(game:GetService("Workspace").NPCs.Hostile:GetChildren()) do 
@@ -97,6 +107,90 @@ game:GetService("Workspace").NPCs.Hostile.ChildRemoved:Connect(function()
         if insert then table.insert(mobs, v.Name) end
     end
     mobdropdown:Refresh(mobs)
+end)
+
+-- AUTO ITEM
+local itemFarmSection = Main:NewSection("Auto Item Farm")
+
+-- ITEMS
+for _,v in pairs(game:GetService("Workspace").Map.Items.SpawnedItems:GetChildren()) do
+    insert = true 
+    for _,v2 in pairs(items) do if v2 == v.Name then insert = false end end
+    if insert then table.insert(items, v.Name) end 
+end
+
+local itemdropdown = itemFarmSection:NewDropdown("Choose Item", "Chooses the item to autofarm", items, function(v) -- CREATES A item DROPDOWN TO CHOOSE THE items (USES THE TABLE FROM THE items SECTION ABOVE)
+    getgenv().item = v
+end)
+
+itemFarmSection:NewToggle("Start Item Farm", "Toggles the autofarming of the items", function(v) 
+    getgenv().autofarmitems = v
+    while wait() do 
+        if getgenv().autofarmitems == false then return end
+        if getgenv().item == nil then 
+            game.StarterGui:SetCore("SendNotification", { 
+                Title = "Error!", 
+                Text = "You havent selected a item with the dropdown above\nUntoggle this toggle!", 
+                Icon = "", 
+                Duration = 2.5 
+            })
+            getgenv().autofarmitems = false 
+            return 
+        end
+        local item = game:GetService("Workspace").Map.Items.SpawnedItems:FindFirstChild(getgenv().item)
+        if item == nil then
+            game.StarterGui:SetCore("SendNotification", {
+                Title = "Info!", 
+                Text = "There is currently no spawned items of this type!\nJust wait until they spawn",
+                Icon = "",
+                Duration = 2.5 
+            })
+            while wait() do 
+                wait()
+                if getgenv().autofarmitems == false then return end 
+                if game:GetService("Workspace").Map.Items.SpawnedItems:FindFirstChild(getgenv().item) ~= nil then break; end
+            end 
+        else
+            local item2 = item
+            while wait() do
+                item = game:GetService("Workspace").Map.Items.SpawnedItems:FindFirstChild(getgenv().item)
+                if item ~= item2 then break; end
+                if getgenv().autofarmitems == false then return end 
+                if item ~= nil then
+                    if item:FindFirstChild("ProximityPrompt") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = item.CFrame
+                        fireproximityprompt(item.ProximityPrompt, 9999)
+                    end
+                    if item:FindFirstChild("Handle") then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = item.Handle.CFrame
+                        fireproximityprompt(item.Handle.ProximityPrompt, 9999)
+                    end
+                end
+                wait() 
+            end
+        end
+    end
+end)
+
+-- UPDATING THE ITEMS
+game:GetService("Workspace").Map.Items.SpawnedItems.ChildAdded:Connect(function() 
+    for _,v2 in pairs(items) do table.remove(items, _) end 
+    for _,v in pairs(game:GetService("Workspace").Map.Items.SpawnedItems:GetChildren()) do
+        insert = true 
+        for _,v2 in pairs(items) do if v2 == v.Name then insert = false end end 
+        if insert then table.insert(items, v.Name) end 
+    end
+    itemdropdown:Refresh(items)
+end)
+ 
+game:GetService("Workspace").Map.Items.SpawnedItems.ChildRemoved:Connect(function() 
+    for _,v2 in pairs(items) do table.remove(items, _) end
+    for _,v in pairs(game:GetService("Workspace").Map.Items.SpawnedItems:GetChildren()) do
+        insert = true 
+        for _,v2 in pairs(items) do if v2 == v.Name then insert = false end end 
+        if insert then table.insert(items, v.Name) end
+    end
+    itemdropdown:Refresh(items)
 end)
 
 -- AUTO SKILLS
@@ -205,5 +299,44 @@ AutoSkillsSection:NewToggle("Z", "", function(state)
         }
         game:GetService("Players").LocalPlayer.Backpack.Events.HotkeyEvent:FireServer(unpack(args))
         wait()
+    end
+end)
+
+-- LOCAL PLAYER
+local Main = Window:NewTab("Local Player")
+local LocalSection = Main:NewSection("Local Player")
+
+LocalSection:NewSlider("Walk Speed", "", 150, 16, function(s)
+    getgenv().WalkSpeedValue = s
+end)
+
+LocalSection:NewSlider("Jump Force", "", 150, 16, function(s)
+    getgenv().JumpPowerValue = s
+end)
+
+LocalSection:NewToggle("Apply Changes", "", function(state)
+    _G.sj = state
+    local Player = game:GetService("Players").LocalPlayer
+    
+    Player.Character.Humanoid:GetPropertyChangedSignal('WalkSpeed'):Connect(function()
+        if _G.sj == true then
+            Player.Character.Humanoid.WalkSpeed = getgenv().WalkSpeedValue;
+        end
+    end)
+        
+    Player.Character.Humanoid:GetPropertyChangedSignal('JumpPower'):Connect(function()
+        if _G.sj == true then
+            Player.Character.Humanoid.JumpPower = getgenv().JumpPowerValue;
+        end
+    end)
+        
+    if _G.sj == true then
+        Player.Character.Humanoid.WalkSpeed = getgenv().WalkSpeedValue;
+        Player.Character.Humanoid.JumpPower = getgenv().JumpPowerValue;
+    end
+    
+    if _G.sj == false then
+        Player.Character.Humanoid.WalkSpeed = 24;
+        Player.Character.Humanoid.JumpPower = 50;
     end
 end)

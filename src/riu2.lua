@@ -109,11 +109,6 @@ game:GetService("Workspace").NPCs.Hostile.ChildRemoved:Connect(function()
     mobdropdown:Refresh(mobs)
 end)
 
--- AUTO QUEST
-local autoQuestSection = Main:NewSection("Auto Quest")
-
-
-
 -- AUTO ITEM
 local itemFarmSection = Main:NewSection("Auto Item Farm")
 

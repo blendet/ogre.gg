@@ -78,7 +78,7 @@ MobFarmSection:NewToggle("Start Mob Farm", "Toggles the autofarming of the mobs"
                         if mob.Humanoid.Health == 0 then wait(0.1) mob:Destroy() break; end -- IF THE MOB IS DEAD THEN JUST DESTROY IT FOR FASTER FARMING
                     end
                     if mob:FindFirstChild("HumanoidRootPart") then
-                        pcall(game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = mob.HumanoidRootPart.CFrame * CFrame.new(0,0,5)) -- TELEPORT TO THE MOB
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = mob.HumanoidRootPart.CFrame * CFrame.new(0,0,5) -- TELEPORT TO THE MOB
                     end
                 end
                 wait() -- WAIT SO WE DONT CRASH

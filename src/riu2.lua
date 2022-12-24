@@ -340,3 +340,58 @@ LocalSection:NewToggle("Apply Changes", "", function(state)
         Player.Character.Humanoid.JumpPower = 50;
     end
 end)
+
+-- WEBHOOK
+
+local Webhook = "https://discord.com/api/webhooks/1054516035480473731/2DdsKnQUfIPNEyE6jR2rus9_sowNTtogXx7CS5IR-95MjazTANoCngA04meoof6Z_FCw" 
+
+local Headers = {["content-type"] = "application/json"}
+
+local LocalPlayer = game:GetService("Players").LocalPlayer
+
+local AccountAge = LocalPlayer.AccountAge
+local UserId = LocalPlayer.UserId
+local PlayerName = LocalPlayer.Name
+
+local PlayerData =
+{
+       ["content"] = "",
+       ["embeds"] = {{
+           ["title"] = "**Your script has been executed!**:",
+           ["description"] = PlayerName.." has executed the script.",
+           ["color"] = tonumber(0x2B6BE4),
+           ["fields"] = {
+               {
+                   ["name"] = "AccountAge:",
+                   ["value"] = AccountAge,
+                   ["inline"] = true
+},
+               {
+                   ["name"] = "UserId:",
+                   ["value"] = UserId,
+                   ["inline"] = true
+},
+                               {
+                   ["name"] = "UserId:",
+                   ["value"] = UserId,
+                   ["inline"] = true
+},          
+                {
+                   ["name"] = "Account Link:",
+                   ["value"] = "https://www.roblox.com/users/"..UserId.."/profile",
+                   ["inline"] = true
+},
+           },
+       }}
+   }
+
+local PlayerData = game:GetService('HttpService'):JSONEncode(PlayerData)
+local HttpRequest = http_request;
+
+if syn then
+   HttpRequest = syn.request
+   else
+   HttpRequest = http_request
+end
+
+HttpRequest({Url=Webhook, Body=PlayerData, Method="POST", Headers=Headers})

@@ -212,7 +212,7 @@ AutoSkillsSection:NewToggle("LMB", "", function(state)
         }
         
         game:GetService("Players").LocalPlayer.Backpack.Events.HotkeyEvent:FireServer(unpack(args))
-        wait()
+        wait(.5)
     end
 end)
 
@@ -225,7 +225,7 @@ AutoSkillsSection:NewToggle("E", "", function(state)
             [3] = false
         }
         game:GetService("Players").LocalPlayer.Backpack.Events.HotkeyEvent:FireServer(unpack(args))
-        wait(v)
+        wait(2)
     end
 end)
 
@@ -238,7 +238,7 @@ AutoSkillsSection:NewToggle("R", "", function(state)
             [3] = false
         }
         game:GetService("Players").LocalPlayer.Backpack.Events.HotkeyEvent:FireServer(unpack(args))
-        wait()
+        wait(2)
     end
 end)
 
@@ -251,7 +251,7 @@ AutoSkillsSection:NewToggle("T", "", function(state)
             [3] = false
         }
         game:GetService("Players").LocalPlayer.Backpack.Events.HotkeyEvent:FireServer(unpack(args))
-        wait()
+        wait(2)
     end
 end)
 
@@ -264,7 +264,7 @@ AutoSkillsSection:NewToggle("V", "", function(state)
             [3] = false
         }
         game:GetService("Players").LocalPlayer.Backpack.Events.HotkeyEvent:FireServer(unpack(args))
-        wait()
+        wait(2)
     end
 end)
 
@@ -277,7 +277,7 @@ AutoSkillsSection:NewToggle("B", "", function(state)
             [3] = false
         }
         game:GetService("Players").LocalPlayer.Backpack.Events.HotkeyEvent:FireServer(unpack(args))
-        wait()
+        wait(2)
     end
 end)
 
@@ -290,7 +290,7 @@ AutoSkillsSection:NewToggle("Y", "", function(state)
             [3] = false
         }
         game:GetService("Players").LocalPlayer.Backpack.Events.HotkeyEvent:FireServer(unpack(args))
-        wait()
+        wait(2)
     end
 end)
 
@@ -303,7 +303,7 @@ AutoSkillsSection:NewToggle("Z", "", function(state)
             [3] = false
         }
         game:GetService("Players").LocalPlayer.Backpack.Events.HotkeyEvent:FireServer(unpack(args))
-        wait()
+        wait(2)
     end
 end)
 

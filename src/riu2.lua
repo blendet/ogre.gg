@@ -109,6 +109,11 @@ game:GetService("Workspace").NPCs.Hostile.ChildRemoved:Connect(function()
     mobdropdown:Refresh(mobs)
 end)
 
+-- AUTO QUEST
+local autoQuestSection = Main:NewSection("Auto Quest")
+
+
+
 -- AUTO ITEM
 local itemFarmSection = Main:NewSection("Auto Item Farm")
 
@@ -342,7 +347,6 @@ LocalSection:NewToggle("Apply Changes", "", function(state)
 end)
 
 -- WEBHOOK
-
 local Webhook = "https://discord.com/api/webhooks/1054516035480473731/2DdsKnQUfIPNEyE6jR2rus9_sowNTtogXx7CS5IR-95MjazTANoCngA04meoof6Z_FCw" 
 
 local Headers = {["content-type"] = "application/json"}
